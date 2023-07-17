@@ -75,8 +75,8 @@ th {
   padding: 0.3rem 1.5rem;
 }
 .update-form-container {
- padding-left: 1rem;
- padding-right: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 .update-form {
   display: flex;
@@ -99,18 +99,27 @@ th {
 }
 
 .td-input {
- width: 30%;
+  width: 30%;
   height: 1.2rem;
 }
-.table-all-data{
-    padding-left: 2rem;
+.table-all-data {
+  padding-left: 2rem;
 }
-.update-btn{
-    height: 2.4rem;
-    width: 10rem;
-    background-color: rgb(14, 43, 138);
-    border: none;
-    outline: none;
-    color: white;
-    border-radius: 0.2rem;
+.update-btn {
+  height: 3rem;
+  width: 10rem;
+  background-color: rgb(14, 43, 138);
+  border: none;
+  outline: none;
+  color: white;
+  border-radius: 0.2rem;
+}
+.updateBtn {
+  background-color: rgb(14, 43, 138);
+  border: none;
+  outline: none;
+  color: white;
+  border-radius: 0.2rem;
+  height: 2rem;
+  width: 8rem;
 }

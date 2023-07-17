@@ -103,6 +103,13 @@ const Home = () => {
 
     }
 
+    const getYearValue =(e)=>{
+        const filterDate = invoiceData.map((each,index)=>{
+            console.log((e), each.date.slice(0,4))
+        })
+        
+    }
+
     return (
         <div className='home'>
             <h1 className='title-invoice'>Invoice Dashboard</h1>
@@ -125,16 +132,14 @@ const Home = () => {
                         <button type='submit' className='submit-btn' onSubmit={getData}>Submit</button><br />
                         {errMsz.length > 1 ? <span className='err-msz'>{errMsz}</span> : ''}
                     </div>
-
                 </form>
-
             </div>
             <div className='update-form-container'>
                 <div className='d-flex'>
                     <button onClick={clickUpdate} className='update-btn'>update Invoice &nbsp;<BsFillArrowDownCircleFill/></button>
                     <div className='expenses-filter__control'>
                         <label className='label'>Filter By year:</label>
-                        <select className='option' value={''} onChange={((e) => console.log(e.target.value))}>
+                        <select className='option'  onChange={((e) => getYearValue(e.target.value))}>
                             <option value='2024-25' >2024-25</option>
                             <option value='2023-24'>2023-24</option>
                             <option value='2022-23'>2022-23</option>
@@ -184,7 +189,7 @@ const Home = () => {
                                     </td>
                                     
                                     <td>
-                                        <button type="submit">Update</button>
+                                        <button type="submit" className='updateBtn'>Update</button>
                                         {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
                                     </td>
                                 </tr>
