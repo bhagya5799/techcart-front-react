@@ -1,60 +1,57 @@
-.home{
-    height: 100dvh;
-    width: 100dvw;
-    padding: 0;
-    margin: 0;
-    overflow-x: hidden;
-    padding-top:0px;
+.home {
+  height: 100dvh;
+  width: 100dvw;
+  padding: 0;
+  margin: 0;
+  /* overflow-x: hidden; */
+  padding-top: 0px;
 }
 
-.title-invoice{
-    text-align: center;
-    text-decoration: underline;
+.title-invoice {
+  text-align: center;
+  text-decoration: underline;
 }
-form{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.form-container{
-   display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-
+.form-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
-.label{
-    text-align: left;
-    font-weight: 600;
-    
+.label {
+  text-align: left;
+  font-weight: 600;
 }
-.input-card{
-    height: 2rem;
-    width: 100%;
-    margin-bottom: 2.5rem;
-    
+.input-card {
+  height: 2rem;
+  width: 100%;
+  margin-bottom: 2.5rem;
 }
-input{
-    width: 100%;
-    height: 100%;
-    outline: none;
-    padding-left: 1rem;
+input,
+option {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  padding-left: 1rem;
 }
-.err-msz{
-    color: red;
-    font-size: 0.8rem;
+.err-msz {
+  color: red;
+  font-size: 0.8rem;
 }
-.submit-btn{
-    height: 100%;
-    width: 20%;
-    background-color: rgb(15, 15, 169);
-    color: white;
-    border-radius: 0.2rem;
-    border-width: 0;
+.submit-btn {
+  height: 100%;
+  width: 20%;
+  background-color: rgb(15, 15, 169);
+  color: white;
+  border-radius: 0.2rem;
+  border-width: 0;
 }
-.new-invoice{
-    color: rgb(18, 18, 80);
+.new-invoice {
+  color: rgb(18, 18, 80);
 }
 table {
   font-family: arial, sans-serif;
@@ -63,8 +60,52 @@ table {
   margin: 1rem;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+.delete-btn {
+  color: white;
+  background-color: rgb(201, 57, 57);
+  border-radius: 0.2rem;
+  border-width: 0;
+  outline: none;
+  padding: 0.3rem 1.5rem;
+}
+.update-form-container {
+ padding-left: 1rem;
+ padding-right: 1rem;
+}
+.update-form {
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+  gap: 0.4rem;
+}
+.update-form input {
+  height: 2rem;
+}
+.expenses-filter__control {
+  display: flex;
+  height: 2rem;
+  width: 100%;
+  align-items: center;
+}
+.option {
+  height: 2rem;
+  width: 10rem;
+}
+
+.td-input {
+ width: 30%;
+  height: 1.2rem;
+}
+.table-all-data{
+    padding-left: 2rem;
+}
+.update-btn{
+    height: 2rem;
+    width: 10rem;
 }
