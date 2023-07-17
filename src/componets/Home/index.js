@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
+import { BsFillArrowDownCircleFill } from 'react-icons/bs'
 import './index.css'
 
 const Home = () => {
@@ -130,7 +131,7 @@ const Home = () => {
             </div>
             <div className='update-form-container'>
                 <div className='d-flex'>
-                    <button onClick={clickUpdate} className='update-btn'>update Invoice</button>
+                    <button onClick={clickUpdate} className='update-btn'>update Invoice &nbsp;<BsFillArrowDownCircleFill/></button>
                     <div className='expenses-filter__control'>
                         <label className='label'>Filter By year:</label>
                         <select className='option' value={''} onChange={((e) => console.log(e.target.value))}>
@@ -143,28 +144,11 @@ const Home = () => {
                     </div>
                 </div>
                 {toggle &&
-                    // <form className='update-form' >
-                    //     <label htmlFor='numbers' className='label'>InvoiceNumber:</label>
-                    //     <input type='number' id='numbers' value={updateNumber} placeholder='InvoiceNumber' onChange={((e) => setUpdateNumber(e.target.value))} />
-                    //     <label htmlFor='amounts' className='label'>InvoiceAmount:</label>
-                    //     <input type='number' id='amounts' value={updateAMount} placeholder='InvoiceAmount' onChange={((e) => setUpdateAmount(e.target.value))} />
-                    //     <label htmlFor='dates' className='label'>Date:</label>
-                    //     <input type='date' id='dates' value={updateDate} onChange={((e) => setUpdateDate(e.target.value))} />
-                    //     <div className='expenses-filter__control'>
-                    //         <label className='label'>year:</label>
-                    //         <select className='option' value={''} onChange={((e) => console.log(e.target.value))}>
-                    //             <option value='2024-25' >2024-25</option>
-                    //             <option value='2023-24'>2023-24</option>
-                    //             <option value='2022-23'>2022-23</option>
-                    //             <option value='2021-22'>2021-22</option>
-                    //             <option value='2020-21'>2020-21</option>
-                    //         </select>
-                    //     </div>
-                    // </form>
                     <form onSubmit={submitUpdateForm}>
                         <table>
                             <thead>
                                 <tr>
+                                    <th>Send Invoice number</th>
                                     <th>Updated Invoice Date</th>
                                     <th>Updated Invoice Amount</th>
                                     <th>Update Invoice</th>
@@ -172,6 +156,15 @@ const Home = () => {
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td>
+                                        <input
+                                            className="td-input"
+                                            type="number"
+                                            value={updateNumber}
+                                            placeholder="Invoice Number"
+                                            onChange={(e) => setUpdateNumber(e.target.value)}
+                                        />
+                                    </td>
                                     <td>
                                         <input
                                             className="td-input"
@@ -189,15 +182,7 @@ const Home = () => {
                                             onChange={(e) => setUpdateAmount(e.target.value)}
                                         />
                                     </td>
-                                    <td>
-                                        <input
-                                            className="td-input"
-                                            type="number"
-                                            value={updateNumber}
-                                            placeholder="Invoice Number"
-                                            onChange={(e) => setUpdateNumber(e.target.value)}
-                                        />
-                                    </td>
+                                    
                                     <td>
                                         <button type="submit">Update</button>
                                         {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
