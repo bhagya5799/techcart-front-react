@@ -12,7 +12,7 @@ const Home = () => {
     const [toggle, setToggle] = useState(false)
 
     const [updateNumber, setUpdateNumber] = useState('')
-    const [updateAMount, setUpdateAmount] = useState('')
+    const [updateAmount, setUpdateAmount] = useState('')
     const [updateDate, setUpdateDate] = useState('')
     const [updateErrorMsz, setUpdateErrorMsz] = useState("");
     const [selectedYear, SetSelectYear] = useState('')
@@ -73,21 +73,22 @@ const Home = () => {
     };
 
 
-    const submitUpdateForm = async (number, updatedData) => {
-        console.log(number, 'number')
+    const submitUpdateForm = async (event) => {
+        event.preventDefault();
         try {
-            const response = await fetch(`https://tech-apis.onrender.com/${number}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedData),
-            });
-            const data = await response.json();
-            // Refresh the invoice data after update
+            const updatedData = {
+                amount: updateAmount,
+                date: updateDate,
+            };
+            await axios.put(`https://tech-apis.onrender.com/${updateNumber}`, updatedData);
             getData();
+            setUpdateAmount("");
+            setUpdateDate("");
+            setUpdateNumber("");
+            setUpdateErrorMsz("");
         } catch (error) {
             console.error(error);
+            setUpdateErrorMsz(error.response.data.error);
         }
     };
 
@@ -142,7 +143,7 @@ const Home = () => {
                     </div>
                 </div>
                 {toggle &&
-                    // <form className='update-form' onSubmit={''}>
+                    // <form className='update-form' >
                     //     <label htmlFor='numbers' className='label'>InvoiceNumber:</label>
                     //     <input type='number' id='numbers' value={updateNumber} placeholder='InvoiceNumber' onChange={((e) => setUpdateNumber(e.target.value))} />
                     //     <label htmlFor='amounts' className='label'>InvoiceAmount:</label>
@@ -160,48 +161,51 @@ const Home = () => {
                     //         </select>
                     //     </div>
                     // </form>
-                    <form onSubmit={submitUpdateForm(updateNumber)}>
+                    <form onSubmit={submitUpdateForm}>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>updated invoice date</th>
-                                    <th>updated invoice amount</th>
-                                    <th>update Invoice</th>
+                                    <th>Updated Invoice Date</th>
+                                    <th>Updated Invoice Amount</th>
+                                    <th>Update Invoice</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <td>
-                                    <input
-                                        className='td-input'
-                                        type="number"
-                                        value={updateAMount}
-                                        onChange={(e) => setUpdateAmount(e.target.value)}
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        className='td-input'
-                                        type="date"
-                                        value={updateDate}
-                                        onChange={(e) => setUpdateDate(e.target.value)}
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        className='td-input'
-                                        type="number"
-                                        value={updateNumber}
-                                        placeholder="Update Amount"
-                                        onChange={(e) => setUpdateNumber(e.target.value)}
-                                    />
-                                </td>
-                                <td>
-                                    <button  type='submit' >Update</button>
-                                    {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
-                                </td>
+                                <tr>
+                                    <td>
+                                        <input
+                                            className="td-input"
+                                            type="date"
+                                            value={updateDate}
+                                            onChange={(e) => setUpdateDate(e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            className="td-input"
+                                            type="number"
+                                            value={updateAmount}
+                                            placeholder="Update Amount"
+                                            onChange={(e) => setUpdateAmount(e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            className="td-input"
+                                            type="number"
+                                            value={updateNumber}
+                                            placeholder="Invoice Number"
+                                            onChange={(e) => setUpdateNumber(e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <button type="submit">Update</button>
+                                        {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                  </form>
+                    </form>
                     }
             </div>
             <table className='table-all-data'>
