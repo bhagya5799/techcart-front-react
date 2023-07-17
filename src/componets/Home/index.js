@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid'
 import './index.css'
 
 const Home = () => {
-
-
     const [invoiceData, setinvoiceData] = useState([])
     const [date, setDate] = useState('')
     const [amount, setAmount] = useState('')
@@ -27,13 +25,12 @@ const Home = () => {
     const getData = async () => {
         const data = await axios.get('https://tech-apis.onrender.com/invoices')
         setinvoiceData(data.data)
-        console.log(data)
+        // console.log(data)
     }
 
 
     const submitForm = async (event) => {
         event.preventDefault()
-        // const ID = localStorage.getItem("ID")
         const url = 'https://tech-apis.onrender.com/'
         const agentDetails = {
             date: date,
@@ -52,12 +49,11 @@ const Home = () => {
         }
         const response = await fetch(url, options)
         const data = await response.json()
-        console.log(data, 'data')
+        // console.log(data, 'data')
         if (data.length > 1) {
-            console.log(data, 'dat')
+            setinvoiceData(data)
+           
             setErrorMsz('')
-            localStorage.setItem("status", false,)
-            localStorage.setItem("id", data.id)
         }
         else {
             setErrorMsz(data.error)
@@ -66,7 +62,7 @@ const Home = () => {
 
 
     const deleteInvoice = async (id) => {
-        console.log(id)
+        
         try {
             await axios.delete(`https://tech-apis.onrender.com/${id}`);
             // Refresh the invoice data after deletion
@@ -77,9 +73,10 @@ const Home = () => {
     };
 
 
-    const submitUpdateForm = async (id, updatedData) => {
+    const submitUpdateForm = async (number, updatedData) => {
+        console.log(number, 'number')
         try {
-            const response = await fetch(`https://tech-apis.onrender.com/${id}`, {
+            const response = await fetch(`https://tech-apis.onrender.com/${number}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +84,6 @@ const Home = () => {
                 body: JSON.stringify(updatedData),
             });
             const data = await response.json();
-            console.log(data);
             // Refresh the invoice data after update
             getData();
         } catch (error) {
@@ -164,38 +160,48 @@ const Home = () => {
                     //         </select>
                     //     </div>
                     // </form>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>updated invoice date</th>
-                                <th>updated invoice amount</th>
-                                <th>update Invoice</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <td>
-                                <input
-                                    className='td-input'
-                                    type="date"
-                                    value={updateDate}
-                                    onChange={(e) => setUpdateDate(e.target.value)}
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    className='td-input'
-                                    type="number"
-                                    value={updateNumber}
-                                    placeholder="Update Amount"
-                                    onChange={(e) => setUpdateAmount(e.target.value)}
-                                />
-                            </td>
-                            <td>
-                                <button onClick={() => ''}>Update</button>
-                                {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
-                            </td>
-                        </tbody>
-                    </table>
+                    <form onSubmit={submitUpdateForm(updateNumber)}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>updated invoice date</th>
+                                    <th>updated invoice amount</th>
+                                    <th>update Invoice</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td>
+                                    <input
+                                        className='td-input'
+                                        type="number"
+                                        value={updateAMount}
+                                        onChange={(e) => setUpdateAmount(e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        className='td-input'
+                                        type="date"
+                                        value={updateDate}
+                                        onChange={(e) => setUpdateDate(e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        className='td-input'
+                                        type="number"
+                                        value={updateNumber}
+                                        placeholder="Update Amount"
+                                        onChange={(e) => setUpdateNumber(e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <button  type='submit' >Update</button>
+                                    {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
+                                </td>
+                            </tbody>
+                        </table>
+                  </form>
                     }
             </div>
             <table className='table-all-data'>
