@@ -49,6 +49,7 @@ option {
   color: white;
   border-radius: 0.2rem;
   border-width: 0;
+  cursor: pointer;
 }
 .new-invoice {
   color: rgb(18, 18, 80);
@@ -73,6 +74,7 @@ th {
   border-width: 0;
   outline: none;
   padding: 0.3rem 1.5rem;
+  cursor: pointer;
 }
 .update-form-container {
   padding-left: 1rem;
@@ -99,8 +101,8 @@ th {
 }
 
 .td-input {
-  width: 30%;
-  height: 1.2rem;
+  width: 50%;
+  height: 1.5rem;
 }
 .table-all-data {
   padding-left: 2rem;
@@ -113,6 +115,7 @@ th {
   outline: none;
   color: white;
   border-radius: 0.2rem;
+  cursor: pointer;
 }
 .updateBtn {
   background-color: rgb(14, 43, 138);
@@ -122,4 +125,26 @@ th {
   border-radius: 0.2rem;
   height: 2rem;
   width: 8rem;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 660px) {
+  .updateBtn {
+    height: 2rem;
+    width: 4rem;
+    
+  }
+  .update-btn {
+    height: 3rem;
+    width: 10rem;
+  }
+  .th-title{
+    font-size: 0.8rem;
+  }
+  .td-input{
+    width: 5rem;
+    padding: 0;
+    font-size: 0.6rem;
+    
+  }
 }

@@ -16,12 +16,29 @@ const Home = () => {
     const [updateAmount, setUpdateAmount] = useState('')
     const [updateDate, setUpdateDate] = useState('')
     const [updateErrorMsz, setUpdateErrorMsz] = useState("");
-    const [selectedYear, SetSelectYear] = useState('')
+    const [selectedYear, setSelectedYear] = useState("");
+    const [filteredInvoiceData, setFilteredInvoiceData] = useState([]);
+   
 
     useEffect(() => {
         getData()
     }, [])
 
+
+    const getYearValue = (e) => {
+        setSelectedYear(e.target.value);
+        console.log(e.target.value)
+
+    };
+
+    useEffect(() => {
+        const filteredData = invoiceData.filter(
+            (invoice) => invoice.date.slice(0, 4) === selectedYear.slice(0, 4)
+        );
+        setFilteredInvoiceData(filteredData);
+        
+        console.log(filteredData.length, 'p')
+    }, [invoiceData, selectedYear]);
 
     const getData = async () => {
         const data = await axios.get('https://tech-apis.onrender.com/invoices')
@@ -53,7 +70,7 @@ const Home = () => {
         // console.log(data, 'data')
         if (data.length > 1) {
             setinvoiceData(data)
-           
+
             setErrorMsz('')
         }
         else {
@@ -63,7 +80,7 @@ const Home = () => {
 
 
     const deleteInvoice = async (id) => {
-        
+
         try {
             await axios.delete(`https://tech-apis.onrender.com/${id}`);
             // Refresh the invoice data after deletion
@@ -103,12 +120,8 @@ const Home = () => {
 
     }
 
-    const getYearValue =(e)=>{
-        const filterDate = invoiceData.map((each,index)=>{
-            console.log((e), each.date.slice(0,4))
-        })
-        
-    }
+
+  
 
     return (
         <div className='home'>
@@ -136,10 +149,10 @@ const Home = () => {
             </div>
             <div className='update-form-container'>
                 <div className='d-flex'>
-                    <button onClick={clickUpdate} className='update-btn'>update Invoice &nbsp;<BsFillArrowDownCircleFill/></button>
+                    <button onClick={clickUpdate} className='update-btn'>update Invoice &nbsp;<BsFillArrowDownCircleFill /></button>
                     <div className='expenses-filter__control'>
                         <label className='label'>Filter By year:</label>
-                        <select className='option'  onChange={((e) => getYearValue(e.target.value))}>
+                        <select className='option' value={selectedYear} onChange={getYearValue}>
                             <option value='2024-25' >2024-25</option>
                             <option value='2023-24'>2023-24</option>
                             <option value='2022-23'>2022-23</option>
@@ -153,7 +166,7 @@ const Home = () => {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Send Invoice number</th>
+                                    <th className='th-title'>Send Invoice number</th>
                                     <th>Updated Invoice Date</th>
                                     <th>Updated Invoice Amount</th>
                                     <th>Update Invoice</th>
@@ -187,7 +200,7 @@ const Home = () => {
                                             onChange={(e) => setUpdateAmount(e.target.value)}
                                         />
                                     </td>
-                                    
+
                                     <td>
                                         <button type="submit" className='updateBtn'>Update</button>
                                         {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
@@ -196,9 +209,9 @@ const Home = () => {
                             </tbody>
                         </table>
                     </form>
-                    }
+                }
             </div>
-            <table className='table-all-data'>
+            {/* <table className='table-all-data'>
                 <thead>
                     <tr>
                         <th>Invoice Number</th>
@@ -214,27 +227,63 @@ const Home = () => {
                             <td>{invoice.date.slice(0, 10)}</td>
                             <td>{invoice.amount}</td>
                             <td><button className='delete-btn' onClick={() => deleteInvoice(invoice.number)}>Delete</button></td>
-                            {/* <td>
-                                <div className="update-form">
-                                    <input
-                                        type="number"
-                                        value={updateNumber}
-                                        placeholder="Update Amount"
-                                        onChange={(e) => setUpdateAmount(e.target.value)}
-                                    />
-                                    <input
-                                        type="date"
-                                        value={updateDate}
-                                        onChange={(e) => setUpdateDate(e.target.value)}
-                                    />
-                                    <button onClick={() => (invoice.id)}>Update</button>
-                                    {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
-                                </div>
-                            </td> */}
+
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </table> */}
+            
+
+            {
+                filteredInvoiceData.length>1 ? (
+                    <table>
+                        <thead>
+                            <th>Invoice Number</th>
+                            <th>Invoice Date</th>
+                            <th>Invoice Amount</th>
+                        </thead>
+                        <tbody>
+                            {filteredInvoiceData.map((invoice, index) => (
+                                <tr key={invoice.id}>
+                                    <td>{invoice.number}</td>
+                                    <td>{invoice.date.slice(0, 10)}</td>
+                                    <td>{invoice.amount}</td>
+                                    <td>
+                                        <button
+                                            className="delete-btn"
+                                            onClick={() => deleteInvoice(invoice.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                <table className='table-all-data'>
+                    <thead>
+                        <tr>
+                            <th>Invoice Number</th>
+                            <th>Invoice Date</th>
+                            <th>Invoice Amount</th>
+                            <th>Delete Invoice Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {invoiceData.map((invoice, index) => (
+                            <tr key={invoice.id}>
+                                <td>{invoice.number}</td>
+                                <td>{invoice.date.slice(0, 10)}</td>
+                                <td>{invoice.amount}</td>
+                                <td><button className='delete-btn' onClick={() => deleteInvoice(invoice.number)}>Delete</button></td>
+
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>)}
+                )
+
         </div>
     )
 }
