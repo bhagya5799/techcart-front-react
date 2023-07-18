@@ -18,27 +18,35 @@ const Home = () => {
     const [updateErrorMsz, setUpdateErrorMsz] = useState("");
     const [selectedYear, setSelectedYear] = useState("");
     const [filteredInvoiceData, setFilteredInvoiceData] = useState([]);
-   
+    const [filterNumber, setFilterNumber] = useState('')
 
     useEffect(() => {
         getData()
     }, [])
 
 
+    // useEffect(() => {
+    //     const filteredInvoiceData = invoiceData.filter((invoice) =>
+    //         filteredData(invoice.date.slice(0, 10))
+    //     );
+    //     setFilteredInvoiceData(filteredInvoiceData);
+    //     console.log('oktttykk');
+    // }, []);
+
+
+
     const getYearValue = (e) => {
         setSelectedYear(e.target.value);
-        console.log(e.target.value)
+
 
     };
-
-    useEffect(() => {
-        const filteredData = invoiceData.filter(
-            (invoice) => invoice.date.slice(0, 4) === selectedYear.slice(0, 4)
-        );
-        setFilteredInvoiceData(filteredData);
-        
-        console.log(filteredData.length, 'p')
-    }, [invoiceData, selectedYear]);
+    const filteredData = (date) => {
+        const financialYear = selectedYear.split("-");
+        const financialYearStart = new Date(`${financialYear[0]}-04-01`);
+        const financialYearEnd = new Date(`20${financialYear[1]}-03-31`);
+        const objDate = new Date(date);
+        return objDate >= financialYearStart && objDate <= financialYearEnd;
+    };
 
     const getData = async () => {
         const data = await axios.get('https://tech-apis.onrender.com/invoices')
@@ -68,9 +76,8 @@ const Home = () => {
         const response = await fetch(url, options)
         const data = await response.json()
         // console.log(data, 'data')
-        if (data.length > 1) {
+        if (data.length > 0) {
             setinvoiceData(data)
-
             setErrorMsz('')
         }
         else {
@@ -80,7 +87,6 @@ const Home = () => {
 
 
     const deleteInvoice = async (id) => {
-
         try {
             await axios.delete(`https://tech-apis.onrender.com/${id}`);
             // Refresh the invoice data after deletion
@@ -90,13 +96,14 @@ const Home = () => {
         }
     };
 
-
     const submitUpdateForm = async (event) => {
         event.preventDefault();
         try {
             const updatedData = {
+                number: updateNumber,
                 amount: updateAmount,
-                date: updateDate,
+                date: updateDate
+
             };
             await axios.put(`https://tech-apis.onrender.com/${updateNumber}`, updatedData);
             getData();
@@ -104,11 +111,13 @@ const Home = () => {
             setUpdateDate("");
             setUpdateNumber("");
             setUpdateErrorMsz("");
-        } catch (error) {
+        }
+        catch (error) {
             console.error(error);
             setUpdateErrorMsz(error.response.data.error);
         }
     };
+
 
 
     const clickUpdate = () => {
@@ -121,6 +130,27 @@ const Home = () => {
     }
 
 
+    const filterInvoiceNumber = (e) => {
+        setFilterNumber(e.target.value)
+    }
+
+    const sendBtn = () => {
+        const filteredData = invoiceData.filter((invoice) =>
+            parseInt(invoice.number) === parseInt(filterNumber)
+        );
+        setFilteredInvoiceData(filteredData);
+    };
+
+    const sendYearBtn =()=>{
+        const filteredInvoiceData = invoiceData.filter((invoice) => 
+        (invoice.date.slice(0, 4) === selectedYear)
+            // console.log(typeof (invoice.date.slice(0, 4)))
+            // filteredData(invoice.date.slice(0, 10))
+        );
+        console.log(filteredInvoiceData)
+        setFilteredInvoiceData(filteredInvoiceData);
+
+    }
   
 
     return (
@@ -143,22 +173,36 @@ const Home = () => {
                     </div>
                     <div className='input-card'>
                         <button type='submit' className='submit-btn' onSubmit={getData}>Submit</button><br />
-                        {errMsz.length > 1 ? <span className='err-msz'>{errMsz}</span> : ''}
+                        {errMsz.length > 0 ? <span className='err-msz'>{errMsz}</span> : ''}
                     </div>
                 </form>
             </div>
             <div className='update-form-container'>
-                <div className='d-flex'>
-                    <button onClick={clickUpdate} className='update-btn'>update Invoice &nbsp;<BsFillArrowDownCircleFill /></button>
-                    <div className='expenses-filter__control'>
-                        <label className='label'>Filter By year:</label>
-                        <select className='option' value={selectedYear} onChange={getYearValue}>
-                            <option value='2024-25' >2024-25</option>
-                            <option value='2023-24'>2023-24</option>
-                            <option value='2022-23'>2022-23</option>
-                            <option value='2021-22'>2021-22</option>
-                            <option value='2020-21'>2020-21</option>
-                        </select>
+                <div className='search-tool-container'>
+                    <div className='d-flex'>
+                        <button onClick={clickUpdate} className='update-btn'>update Invoice &nbsp;<BsFillArrowDownCircleFill /></button>
+                        {/* <div className='expenses-filter__control'>
+                                <label className='label'>Filter By year:</label>
+                                <select className='option' value={selectedYear} onChange={getYearValue}>
+                                    <option value='2024-25' >2025-26</option>
+                                    <option value='2024-25' >2024-25</option>
+                                    <option value='2023-24'>2023-24</option>
+                                    <option value='2022-23'>2022-23</option>
+                                    <option value='2021-22'>2021-22</option>
+                                    <option value='2020-21'>2020-21</option>
+                                    <option value='2020-21'>1999-2020</option>
+                                </select>
+                        </div> */}
+                        <div className='nbr__container'>
+                            <input type='number' placeholder='Search year' id="filter__nbr"
+                                className='filter__nbr' value={selectedYear} onChange={getYearValue} />
+                            <button className='send__btn' onClick={sendYearBtn}>Send</button>
+                        </div>
+                    </div>
+                    <div className='nbr__container'>
+                        <input type='number' placeholder='Search Number' id="filter__nbr"
+                            className='filter__nbr' value={filterNumber} onChange={filterInvoiceNumber} />
+                        <button className='send__btn' onClick={sendBtn}>Send</button>
                     </div>
                 </div>
                 {toggle &&
@@ -202,7 +246,7 @@ const Home = () => {
                                     </td>
 
                                     <td>
-                                        <button type="submit" className='updateBtn'>Update</button>
+                                        <button type="submit" className='updateBtn' >Update</button>
                                         {updateErrorMsz && <span className="err-msz">{updateErrorMsz}</span>}
                                     </td>
                                 </tr>
@@ -211,31 +255,9 @@ const Home = () => {
                     </form>
                 }
             </div>
-            {/* <table className='table-all-data'>
-                <thead>
-                    <tr>
-                        <th>Invoice Number</th>
-                        <th>Invoice Date</th>
-                        <th>Invoice Amount</th>
-                        <th>Delete Invoice Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {invoiceData.map((invoice, index) => (
-                        <tr key={invoice.id}>
-                            <td>{invoice.number}</td>
-                            <td>{invoice.date.slice(0, 10)}</td>
-                            <td>{invoice.amount}</td>
-                            <td><button className='delete-btn' onClick={() => deleteInvoice(invoice.number)}>Delete</button></td>
-
-                        </tr>
-                    ))}
-                </tbody>
-            </table> */}
-            
 
             {
-                filteredInvoiceData.length>1 ? (
+                filteredInvoiceData.length > 0 ? (
                     <table>
                         <thead>
                             <th>Invoice Number</th>
@@ -261,32 +283,33 @@ const Home = () => {
                         </tbody>
                     </table>
                 ) : (
-                <table className='table-all-data'>
-                    <thead>
-                        <tr>
-                            <th>Invoice Number</th>
-                            <th>Invoice Date</th>
-                            <th>Invoice Amount</th>
-                            <th>Delete Invoice Number</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {invoiceData.map((invoice, index) => (
-                            <tr key={invoice.id}>
-                                <td>{invoice.number}</td>
-                                <td>{invoice.date.slice(0, 10)}</td>
-                                <td>{invoice.amount}</td>
-                                <td><button className='delete-btn' onClick={() => deleteInvoice(invoice.number)}>Delete</button></td>
-
+                    <table className='table-all-data'>
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Invoice Date</th>
+                                <th>Invoice Amount</th>
+                                <th>Delete Invoice Number</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>)}
-                )
+                        </thead>
+                        <tbody>
+                            {invoiceData.map((invoice, index) => (
+                                <tr key={invoice.id}>
+                                    <td>{invoice.number}</td>
+                                    <td>{invoice.date.slice(0, 10)}</td>
+                                    <td>{invoice.amount}</td>
+                                    <td><button className='delete-btn' onClick={() => deleteInvoice(invoice.number)}>Delete</button></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>)}
+
 
         </div>
     )
 }
 export default Home
+
+
 
 

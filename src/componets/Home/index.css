@@ -59,12 +59,13 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin: 1rem;
+  padding: 2rem;
 }
 
 td,
 th {
   border: 1px solid #dddddd;
-  text-align: left;
+  text-align: center;
   padding: 8px;
 }
 .delete-btn {
@@ -92,7 +93,7 @@ th {
 .expenses-filter__control {
   display: flex;
   height: 2rem;
-  width: 100%;
+  /* width: 100%; */
   align-items: center;
 }
 .option {
@@ -127,24 +128,57 @@ th {
   width: 8rem;
   cursor: pointer;
 }
+.search-tool-container {
+  display: flex;
+  gap: 3rem;
+  /* width: 80%; */
+ 
+}
+.filter__nbr {
+  width: 100%;
+  height: 2rem;
+
+}
+.nbr__container {
+  display: flex;
+  align-items: center;
+  
+}
+.send__btn{
+    height: 2.2rem;
+    width: 5rem;
+    background-color: rgb(17, 15, 20);
+    color: white;
+    border-radius: 0.2rem;
+}
 
 @media screen and (max-width: 660px) {
   .updateBtn {
     height: 2rem;
     width: 4rem;
-    
   }
   .update-btn {
     height: 3rem;
-    width: 10rem;
+    width: 14rem;
   }
-  .th-title{
+
+  .th-title {
     font-size: 0.8rem;
   }
-  .td-input{
+  .td-input {
     width: 5rem;
     padding: 0;
     font-size: 0.6rem;
-    
+  }
+  .search-tool-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .filter__nbr {
+    width: 90%;
+    height: 2rem;
+    margin-left: 1rem;
+    margin-right: 2rem;
   }
 }
