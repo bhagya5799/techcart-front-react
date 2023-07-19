@@ -25,14 +25,6 @@ const Home = () => {
     }, [])
 
 
-    // useEffect(() => {
-    //     const filteredInvoiceData = invoiceData.filter((invoice) =>
-    //         filteredData(invoice.date.slice(0, 10))
-    //     );
-    //     setFilteredInvoiceData(filteredInvoiceData);
-    //     console.log('oktttykk');
-    // }, []);
-
 
 
     const getYearValue = (e) => {
@@ -40,50 +32,14 @@ const Home = () => {
 
 
     };
-    // const filteredData = (date) => {
-    //     const financialYear = selectedYear.split("-");
-    //     const financialYearStart = new Date(`${financialYear[0]}-04-01`);
-    //     const financialYearEnd = new Date(`20${financialYear[1]}-03-31`);
-    //     const objDate = new Date(date);
-    //     return objDate >= financialYearStart && objDate <= financialYearEnd;
-    // };
+   
 
     const getData = async () => {
         const data = await axios.get('https://tech-apis.onrender.com/invoices')
         setinvoiceData(data.data)
-        // console.log(data)
+    
     }
 
-
-    // const submitForm = async (event) => {
-    //     event.preventDefault()
-    //     const url = 'https://tech-apis.onrender.com/'
-    //     const agentDetails = {
-    //         date: date,
-    //         amount: amount,
-    //         number: number,
-    //         id: uuidv4(),
-
-    //     }
-    //     const options = {
-    //         method: "POST",
-    //         body: JSON.stringify(agentDetails),
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             accept: 'application/json',
-    //         },
-    //     }
-    //     const response = await fetch(url, options)
-    //     const data = await response.json()
-    //     console.log(data,response.ok, 'data')
-    //     if (response.ok===true) {
-    //         setinvoiceData(data)
-    //         setErrorMsz('')
-    //     }
-    //     else {
-    //         setErrorMsz(data.error)
-    //     }
-    // }
     const submitForm = async (event) => {
         event.preventDefault();
         const url = 'https://tech-apis.onrender.com/';
@@ -214,11 +170,7 @@ const Home = () => {
                                     <option value='2019'>2019-20</option>
                                 </select>
                         </div>
-                        {/* <div className='nbr__container'>
-                            <input type='number' placeholder='Search year' id="filter__nbr"
-                                className='filter__nbr' value={selectedYear} onChange={getYearValue} />
-                            <button className='send__btn' onClick={sendYearBtn}>Send</button>
-                        </div> */}
+                     
                     </div>
                     <div className='nbr__container'>
                         <input type='number' placeholder='Search Number' id="filter__nbr"
