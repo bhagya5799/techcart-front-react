@@ -25,19 +25,14 @@ const Home = () => {
     }, [])
 
 
-
-
     const getYearValue = (e) => {
         setSelectedYear(e.target.value);
-
-
     };
    
 
     const getData = async () => {
         const data = await axios.get('https://tech-apis.onrender.com/invoices')
         setinvoiceData(data.data)
-    
     }
 
     const submitForm = async (event) => {
